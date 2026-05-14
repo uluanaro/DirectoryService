@@ -1,0 +1,61 @@
+// Entities/Department.cs
+namespace Directory.Domain.Entities;
+
+using Directory.Domain.ValueObjects;
+
+public sealed class Department
+{
+    public Guid Id { get; private set; }
+    
+    public DepartmentName Name { get; private set; }
+    public Slug Slug { get; private set; }
+    
+    public Guid? ParentId { get; private set; }
+
+ 
+    private readonly List<DepartmentLocation> _locations = new();
+    public IReadOnlyList<DepartmentLocation> Locations => _locations.AsReadOnly();
+
+    private readonly List<DepartmentPosition> _positions = new();
+    public IReadOnlyList<DepartmentPosition> Positions => _positions.AsReadOnly();
+
+    private Department() { }
+
+    public static Department Create(string name, string slug, Guid? parentId = null)
+    {
+        return new Department
+        {
+            Id = Guid.NewGuid(),
+            Name = DepartmentName.Create(name),
+            Slug = Slug.Create(slug),
+            ParentId = parentId
+        };
+    }
+
+    
+    public void Rename(string newName)
+    {
+        Name = DepartmentName.Create(newName);
+    }
+
+    public void AddLocation(Location location, bool isPrimary = false)
+    {
+        ArgumentNullException.ThrowIfNull(location);
+
+        // Защита от дублирования
+        if (_locations.Any(l => l.LocationId == location.Id))
+            throw new InvalidOperationException("Эта локация уже привязана к подразделению");
+
+        _locations.Add(DepartmentLocation.Create(this, location, isPrimary));
+    }
+
+    public void AddPosition(Position position)
+    {
+        ArgumentNullException.ThrowIfNull(position);
+
+        if (_positions.Any(p => p.PositionId == position.Id))
+            throw new InvalidOperationException("Эта должность уже привязана к подразделению");
+
+        _positions.Add(DepartmentPosition.Create(this, position));
+    }
+}
