@@ -1,7 +1,7 @@
 // ValueObjects/DepartmentName.cs
 namespace Directory.Domain.ValueObjects;
 
-public sealed class DepartmentName
+public sealed record DepartmentName
 {
     public string Value { get; }
 
