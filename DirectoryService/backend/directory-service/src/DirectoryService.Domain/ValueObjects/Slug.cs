@@ -3,7 +3,7 @@ namespace Directory.Domain.ValueObjects;
 
 using System.Text.RegularExpressions;
 
-public sealed class Slug
+public sealed record Slug
 {
     private static readonly Regex ValidSlug = new(@"^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
 
@@ -28,9 +28,7 @@ public sealed class Slug
 
         return new Slug(value);
     }
-
-    public override bool Equals(object? obj) =>
-        obj is Slug other && Value == other.Value;
+    
 
     public override int GetHashCode() => Value.GetHashCode();
 

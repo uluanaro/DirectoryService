@@ -26,8 +26,8 @@ public sealed class Department
         return new Department
         {
             Id = Guid.NewGuid(),
-            Name = DepartmentName.Create(name),
-            Slug = Slug.Create(slug),
+            Name = name,
+            Slug = slug,
             ParentId = parentId
         };
     }
@@ -35,7 +35,7 @@ public sealed class Department
     
     public void Rename(string newName)
     {
-        Name = DepartmentName.Create(newName);
+        Name = newName;
     }
 
     public void AddLocation(Location location, bool isPrimary = false)

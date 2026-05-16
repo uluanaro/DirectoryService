@@ -4,24 +4,57 @@ namespace Directory.Domain.Entities;
 public sealed class Location
 {
     public Guid Id { get; private set; }
-    public string Name { get; private set; }
-    public string Address { get; private set; }
-    
+    public LocationName Name { get; private set; }
+    public Address Address { get; private set; }
+
     private Location() { }
 
-    public static Location Create(string name, string address)
+    public static Location Create(LocationName name, Address address)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Название локации не может быть пустым", nameof(name));
-
-        if (string.IsNullOrWhiteSpace(address))
-            throw new ArgumentException("Адрес не может быть пустым", nameof(address));
 
         return new Location
         {
             Id = Guid.NewGuid(),
-            Name = name.Trim(),
-            Address = address.Trim()
+            Name = name,
+            Address = address
         };
     }
 }
+    
+    public sealed partial record LocationName
+    {
+        public string Value { get; }
+
+        public LocationName(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Место не может не принимать значение");
+
+            Value = value.Trim();
+        }
+
+        public static implicit operator string(LocationName name) => name.Value;
+        public static explicit operator LocationName(string value) => new(value);
+
+        public override string ToString() => Value;
+        public override int GetHashCode() => Value.GetHashCode();
+    }
+
+    public sealed record Address
+    {
+        public string Value { get; }
+
+        public Address(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Адрес не может быть пустым.");
+
+            Value = value.Trim();
+        }
+
+        public static implicit operator string(Address address) => address.Value;
+        public static explicit operator Address(string value) => new(value);
+
+        public override string ToString() => Value;
+        public override int GetHashCode() => Value.GetHashCode();
+    }
