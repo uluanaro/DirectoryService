@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.WebAPI", "src\DirectoryService.WebAPI\DirectoryService.WebAPI.csproj", "{7DC4E144-10CB-4851-9FC6-E5D3AEC1C540}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Infrastructure.Postgres", "DirectoryService.Infrastructure.Postgres\DirectoryService.Infrastructure.Postgres.csproj", "{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,18 @@ Global
 		{7DC4E144-10CB-4851-9FC6-E5D3AEC1C540}.Release|x64.Build.0 = Release|Any CPU
 		{7DC4E144-10CB-4851-9FC6-E5D3AEC1C540}.Release|x86.ActiveCfg = Release|Any CPU
 		{7DC4E144-10CB-4851-9FC6-E5D3AEC1C540}.Release|x86.Build.0 = Release|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Debug|x64.Build.0 = Debug|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Debug|x86.Build.0 = Debug|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Release|x64.ActiveCfg = Release|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Release|x64.Build.0 = Release|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Release|x86.ActiveCfg = Release|Any CPU
+		{B20C7DD0-8AEC-4817-95E8-E45DCB2A0788}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
