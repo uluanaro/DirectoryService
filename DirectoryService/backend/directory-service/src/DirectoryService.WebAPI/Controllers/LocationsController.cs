@@ -5,12 +5,12 @@ namespace DirectoryService.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DepartmentsController : ControllerBase
+public class LocationsController : ControllerBase
 {
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(Array.Empty<DepartmentResponse>());
+        return Ok(Array.Empty<LocationResponse>());
     }
 
     [HttpGet("{id:guid}")]
@@ -20,20 +20,18 @@ public class DepartmentsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateDepartmentRequest request)
+    public IActionResult Create([FromBody] CreateLocationRequest request)
     {
-        var response = new DepartmentResponse(
+        var response = new LocationResponse(
             Guid.NewGuid(),
-            request.Prefix,
             request.Name,
-            request.Slug,
-            request.ParentId
+            request.Address
         );
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult Update(Guid id, [FromBody] UpdateDepartmentRequest request)
+    public IActionResult Update(Guid id, [FromBody] UpdateLocationRequest request)
     {
         return NotFound();
     }
