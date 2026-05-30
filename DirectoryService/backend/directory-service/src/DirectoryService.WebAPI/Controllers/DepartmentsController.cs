@@ -19,20 +19,39 @@ public class DepartmentsController : ControllerBase
     public async Task<IActionResult> GetDepartments()
     {
         var departments = await _repository.GetDepartments();
-        return Ok(departments);
+        
+        var result = departments.Select(d => new
+        {
+            id = d.Id,
+            namePrefix = d.Name.Prefix,
+            name = d.Name.Name,
+            slug = d.Slug.Value,
+            parentId = d.ParentId
+        });
+        
+        return Ok(result);
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateDepartment(string name, string slug, Guid? parentId = null)
+    public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentRequest request)
     {
         try
         {
-            var departmentName = DepartmentName.Create("", name);
-            var slugObj = Slug.Create(slug);
-            var department = Department.Create(departmentName, slugObj, parentId);
+            var departmentName = DepartmentName.Create(request.Prefix, request.Name);
+            var slugObj = Slug.Create(request.Slug);
+            var department = Department.Create(departmentName, slugObj, request.ParentId);
             
             await _repository.AddDepartment(department);
-            return Ok(department);
+            
+            
+            return Ok(new
+            {
+                id = department.Id,
+                namePrefix = department.Name.Prefix,
+                name = department.Name.Name,
+                slug = department.Slug.Value,
+                parentId = department.ParentId
+            });
         }
         catch (ArgumentException ex)
         {
@@ -40,3 +59,10 @@ public class DepartmentsController : ControllerBase
         }
     }
 }
+
+public record CreateDepartmentRequest(
+    string Prefix,
+    string Name,
+    string Slug,
+    Guid? ParentId
+);
