@@ -1,5 +1,3 @@
-// Infrastructure/Persistence/AppDbContext.cs
-
 using Microsoft.EntityFrameworkCore;
 
 namespace DirectoryService.Infrastructure;
