@@ -10,10 +10,8 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     public void Configure(EntityTypeBuilder<Department> builder)
     {
         builder.ToTable("departments");
-
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Id).HasColumnName("id");
-
 
         builder.OwnsOne(d => d.Name, nb =>
         {
@@ -24,10 +22,9 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 
             nb.Property(n => n.Name)
                 .IsRequired()
-                .HasMaxLength(LengthConstants.Length500)
+                .HasMaxLength(LengthConstants.Length50)
                 .HasColumnName("name");
         });
-
 
         builder.Property(d => d.Slug)
             .HasConversion(
@@ -41,7 +38,6 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.Property(d => d.ParentId)
             .IsRequired(false)
             .HasColumnName("parent_id");
-
 
         builder.HasMany(d => d.Locations)
             .WithOne()
