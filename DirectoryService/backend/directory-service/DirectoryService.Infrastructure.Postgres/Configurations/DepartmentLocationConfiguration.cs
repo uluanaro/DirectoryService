@@ -33,10 +33,5 @@ public class DepartmentLocationConfiguration : IEntityTypeConfiguration<Departme
             .WithMany()
             .HasForeignKey(dl => dl.LocationId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne<Department>()
-            .WithMany()
-            .HasForeignKey(dl => dl.DepartmentId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

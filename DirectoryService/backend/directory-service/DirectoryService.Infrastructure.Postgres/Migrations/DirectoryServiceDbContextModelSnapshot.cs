@@ -58,16 +58,11 @@ namespace DirectoryService.Infrastructure.Postgres.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("assigned_at");
 
-                    b.Property<Guid?>("DepartmentId1")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean")
                         .HasColumnName("is_primary");
 
                     b.HasKey("DepartmentId", "LocationId");
-
-                    b.HasIndex("DepartmentId1");
 
                     b.HasIndex("LocationId");
 
@@ -88,12 +83,7 @@ namespace DirectoryService.Infrastructure.Postgres.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("assigned_at");
 
-                    b.Property<Guid?>("DepartmentId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("DepartmentId", "PositionId");
-
-                    b.HasIndex("DepartmentId1");
 
                     b.HasIndex("PositionId");
 
@@ -181,14 +171,10 @@ namespace DirectoryService.Infrastructure.Postgres.Migrations
             modelBuilder.Entity("Directory.Domain.Entities.DepartmentLocation", b =>
                 {
                     b.HasOne("Directory.Domain.Entities.Department", null)
-                        .WithMany()
+                        .WithMany("Locations")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Directory.Domain.Entities.Department", null)
-                        .WithMany("Locations")
-                        .HasForeignKey("DepartmentId1");
 
                     b.HasOne("Directory.Domain.Entities.Location", null)
                         .WithMany()
@@ -200,14 +186,10 @@ namespace DirectoryService.Infrastructure.Postgres.Migrations
             modelBuilder.Entity("Directory.Domain.Entities.DepartmentPosition", b =>
                 {
                     b.HasOne("Directory.Domain.Entities.Department", null)
-                        .WithMany()
+                        .WithMany("Positions")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Directory.Domain.Entities.Department", null)
-                        .WithMany("Positions")
-                        .HasForeignKey("DepartmentId1");
 
                     b.HasOne("Directory.Domain.Entities.Position", null)
                         .WithMany()
