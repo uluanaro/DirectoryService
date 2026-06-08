@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DirectoryService.Infrastructure.Postgres;
+using FluentValidation;
+using DirectoryService.Application.Locations.CreateLocation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,9 @@ builder.Services.AddDbContext<DirectoryServiceDbContext>(options =>
 
 
 builder.Services.AddScoped<DirectoryRepository>();
+
+builder.Services.AddScoped<CreateLocationUseCase>();
+builder.Services.AddScoped<IValidator<CreateLocationCommand>, CreateLocationCommandValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,44 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
+using DirectoryService.Application.Locations.CreateLocation;
 using DirectoryService.Contracts;
-
-namespace DirectoryService.WebAPI.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("locations")]
 public class LocationsController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        return Ok(Array.Empty<LocationResponse>());
-    }
+    private readonly CreateLocationUseCase _useCase;
 
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById(Guid id)
+    public LocationsController(CreateLocationUseCase useCase)
     {
-        return NotFound();
+        _useCase = useCase;
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateLocationRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] CreateLocationRequest request,
+        CancellationToken ct)
     {
-        var response = new LocationResponse(
-            Guid.NewGuid(),
-            request.Name,
-            request.Address
-        );
-        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
-    }
-
-    [HttpPut("{id:guid}")]
-    public IActionResult Update(Guid id, [FromBody] UpdateLocationRequest request)
-    {
-        return NotFound();
-    }
-
-    [HttpDelete("{id:guid}")]
-    public IActionResult Delete(Guid id)
-    {
-        return NoContent();
+        var command = new CreateLocationCommand(
+            request.Name, 
+            $"{request.Address}, {request.Address.City}, {request.Address.Country}");
+        var id = await _useCase.Handle(command, ct);
+        return Ok(new { id });
     }
 }
