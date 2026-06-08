@@ -28,5 +28,15 @@ public class DepartmentLocationConfiguration : IEntityTypeConfiguration<Departme
         builder.Property(dl => dl.AssignedAt)
             .IsRequired()
             .HasColumnName("assigned_at");
+        
+        builder.HasOne<Location>()
+            .WithMany()
+            .HasForeignKey(dl => dl.LocationId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<Department>()
+            .WithMany()
+            .HasForeignKey(dl => dl.DepartmentId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

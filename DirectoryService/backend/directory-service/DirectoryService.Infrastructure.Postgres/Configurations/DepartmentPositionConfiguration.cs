@@ -18,5 +18,17 @@ public class DepartmentPositionConfiguration : IEntityTypeConfiguration<Departme
         builder.Property(dp => dp.AssignedAt)
             .IsRequired()
             .HasColumnName("assigned_at");
+        
+        
+            builder.HasOne<Position>()
+                .WithMany()
+                .HasForeignKey(dp => dp.PositionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne<Department>()
+                .WithMany()
+                .HasForeignKey(dp => dp.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        
     }
 }

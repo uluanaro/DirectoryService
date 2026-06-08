@@ -1,6 +1,6 @@
 using Directory.Domain.Entities;
-using Directory.Domain.ValueObjects;
 using DirectoryService.Domain;
+using DirectoryService.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
