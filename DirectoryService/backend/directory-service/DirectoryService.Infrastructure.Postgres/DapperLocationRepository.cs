@@ -19,6 +19,7 @@ public class DapperLocationRepository: ILocationRepository
     }
     public async Task AddAsync(Location location, CancellationToken ct = default)
     {
+        
         var sql = "INSERT INTO locations (id, name, address) VALUES(@Id, @Name, @Address)";
         var parameters = new { Id =location.Id.Value, location.Name, location.Address };
 

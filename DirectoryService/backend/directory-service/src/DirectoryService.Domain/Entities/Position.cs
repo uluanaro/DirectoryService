@@ -10,6 +10,8 @@ public class Position
     
     public static Position Create(string name, string description = "")
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Имя не может быть пустым.");
         return new Position
         {
             Id = Guid.NewGuid(),

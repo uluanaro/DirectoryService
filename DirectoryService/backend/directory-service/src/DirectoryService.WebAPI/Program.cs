@@ -16,9 +16,13 @@ builder.Services.AddDbContext<DirectoryServiceDbContext>(options =>
 builder.Services.AddScoped<DirectoryRepository>();
 builder.Services.AddScoped<ILocationRepository, DapperLocationRepository>();
 
-builder.Services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(
-    builder.Configuration
-        .GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IDbConnection>(sp =>
+{
+    var connection = new NpgsqlConnection(
+    builder.Configuration.GetConnectionString("DefaultConnection"));
+    connection.Open();
+    return connection;
+});
 
 builder.Services.AddScoped<CreateLocationUseCase>();
 builder.Services.AddScoped<IValidator<CreateLocationCommand>, CreateLocationCommandValidator>();

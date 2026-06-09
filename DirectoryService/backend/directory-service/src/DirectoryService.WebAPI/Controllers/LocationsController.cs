@@ -22,6 +22,6 @@ public class LocationsController : ControllerBase
             request.Name, 
             $"{request.Address.Street}, {request.Address.City}, {request.Address.Country}");
         var id = await _useCase.Handle(command, ct);
-        return Ok(new { id });
+        return Created($"/locations/{id}", new { id });
     }
 }
