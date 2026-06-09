@@ -20,7 +20,7 @@ public class LocationsController : ControllerBase
     {
         var command = new CreateLocationCommand(
             request.Name, 
-            $"{request.Address}, {request.Address.City}, {request.Address.Country}");
+            $"{request.Address.Street}, {request.Address.City}, {request.Address.Country}");
         var id = await _useCase.Handle(command, ct);
         return Ok(new { id });
     }
