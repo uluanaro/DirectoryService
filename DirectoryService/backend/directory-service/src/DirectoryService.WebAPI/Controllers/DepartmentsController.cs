@@ -1,46 +1,36 @@
+using DirectoryService.Application.Departments.CreateDepartment;
 using Microsoft.AspNetCore.Mvc;
 using DirectoryService.Contracts;
 
 namespace DirectoryService.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("departments")]
+    
+    
 public class DepartmentsController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetAll()
+    private readonly CreateDepartmentUseCase _useCase;
+    
+    public DepartmentsController(CreateDepartmentUseCase useCase)
     {
-        return Ok(Array.Empty<DepartmentResponse>());
+        _useCase = useCase;
     }
-
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById(Guid id)
-    {
-        return NotFound();
-    }
-
+    
     [HttpPost]
-    public IActionResult Create([FromBody] CreateDepartmentRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] CreateDepartmentRequest request,
+        CancellationToken ct)
     {
-        var response = new DepartmentResponse(
-            Guid.NewGuid(),
+        var command = new CreateDepartmentCommand(
             request.Prefix,
             request.Name,
             request.Slug,
-            request.ParentId
-        );
-        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+            request.ParentId,
+            request.LocationsId);
+        
+        var id = await _useCase.Handle(command, ct);
+        return Created($"/departments/{id}", new { id });
     }
-
-    [HttpPut("{id:guid}")]
-    public IActionResult Update(Guid id, [FromBody] UpdateDepartmentRequest request)
-    {
-        return NotFound();
-    }
-
-    [HttpDelete("{id:guid}")]
-    public IActionResult Delete(Guid id)
-    {
-        return NoContent();
-    }
+    
 }

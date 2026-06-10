@@ -22,4 +22,5 @@ public class DirectoryServiceDbContext : DbContext
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Position> Positions => Set<Position>();
     public DbSet<Location> Locations => Set<Location>();
+    public DbSet<DepartmentLocation> DepartmentLocations => Set<DepartmentLocation>();
 }

@@ -1,4 +1,6 @@
 using System.Data;
+using DirectoryService.Application.Departments.CreateDepartment;
+using DirectoryService.Application.Departments.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using DirectoryService.Infrastructure.Postgres;
 using DirectoryService.Application.Locations.CreateLocation;
@@ -26,6 +28,10 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 
 builder.Services.AddScoped<CreateLocationUseCase>();
 builder.Services.AddScoped<IValidator<CreateLocationCommand>, CreateLocationCommandValidator>();
+
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<CreateDepartmentUseCase>();
+builder.Services.AddScoped<IValidator<CreateDepartmentCommand>, CreateDepartmentCommandValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

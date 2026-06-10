@@ -1,15 +1,16 @@
-using Directory.Domain.Entities;
+
 using DirectoryService.Domain.ValueObjects;
 
 namespace Directory.Domain.Entities;
-
 public sealed class Department
 {
     public Guid Id { get; private set; }
     public DepartmentName Name { get; private set; } = null!;
     public Slug Slug { get; private set; } = null!;
     public Guid? ParentId { get; private set; }
-    
+
+    public string Path { get; private set; } = string.Empty;
+
     private readonly List<DepartmentLocation> _locations = new();
     public IReadOnlyList<DepartmentLocation> Locations => _locations.AsReadOnly();
     
@@ -18,14 +19,15 @@ public sealed class Department
     
     private Department() { }
     
-    public static Department Create(DepartmentName name, Slug slug, Guid? parentId = null)
+    public static Department Create(DepartmentName name, Slug slug, string? parentPath,Guid? parentId = null)
     {
         return new Department
         {
             Id = Guid.NewGuid(),
             Name = name,
             Slug = slug,
-            ParentId = parentId
+            ParentId = parentId,
+            Path = parentPath == null ? slug.Value : $"{parentPath}/{slug.Value}"
         };
     }
     

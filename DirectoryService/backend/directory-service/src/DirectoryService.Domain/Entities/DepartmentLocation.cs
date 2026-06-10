@@ -21,4 +21,15 @@ public sealed class DepartmentLocation
             AssignedAt = DateTime.UtcNow
         };
     }
+    public static DepartmentLocation CreateById(Department department, Guid locationId)
+    {
+        ArgumentNullException.ThrowIfNull(department);
+        return new DepartmentLocation
+        {
+            DepartmentId = department.Id,
+            LocationId = new LocationId(locationId),
+            IsPrimary = false,
+            AssignedAt = DateTime.UtcNow
+        };
+    }
 }

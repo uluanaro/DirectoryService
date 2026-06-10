@@ -49,5 +49,9 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
             .WithOne()
             .HasForeignKey(dp => dp.DepartmentId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Property(d => d.Path)
+            .IsRequired()
+            .HasColumnName("path");
     }
 }

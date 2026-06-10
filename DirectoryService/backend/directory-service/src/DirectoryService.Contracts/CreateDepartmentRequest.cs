@@ -4,5 +4,5 @@ public record CreateDepartmentRequest(
     string Prefix,  
     string Name,   
     string Slug,    
-    Guid? ParentId 
-);
+    Guid? ParentId,
+    List<Guid> LocationsId);
