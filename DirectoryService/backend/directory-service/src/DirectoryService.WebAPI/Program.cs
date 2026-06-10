@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using DirectoryService.Infrastructure.Postgres;
 using DirectoryService.Application.Locations.CreateLocation;
 using DirectoryService.Application.Locations.Interfaces;
+using DirectoryService.WebAPI.Middleware;
 using FluentValidation;
 using Npgsql;
 
@@ -15,7 +16,6 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DirectoryServiceDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<DirectoryRepository>();
 builder.Services.AddScoped<ILocationRepository, DapperLocationRepository>();
 
 builder.Services.AddScoped<IDbConnection>(sp =>
@@ -40,6 +40,6 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 app.Run();

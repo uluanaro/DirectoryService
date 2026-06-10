@@ -23,7 +23,8 @@ public class DepartmentRepository : IDepartmentRepository
 
     public async Task<bool> AllLocationsExistAsync(IEnumerable<Guid> locationsId, CancellationToken ct)
     {
-        var locationsList = locationsId.ToList();
+        var locationsList = locationsId.ToList(); 
+        // TODO: загружает все локации в память — оптимизировать через WHERE id IN (...) при росте данных
         var existingIds = await _context.Locations
             .Select(l => l.Id.Value)
             .ToListAsync(ct);

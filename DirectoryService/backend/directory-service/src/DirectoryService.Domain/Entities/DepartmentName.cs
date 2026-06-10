@@ -6,6 +6,8 @@ public record DepartmentName
 {
     public string Prefix { get; }
     public string Name { get; }
+    
+    private DepartmentName() { }
 
     private DepartmentName(string prefix, string name)
     {
