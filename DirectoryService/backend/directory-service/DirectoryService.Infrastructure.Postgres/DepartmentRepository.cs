@@ -1,5 +1,6 @@
 using Directory.Domain.Entities;
 using DirectoryService.Application.Departments.Interfaces;
+using DirectoryService.Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -53,4 +54,63 @@ public class DepartmentRepository : IDepartmentRepository
         }
         
     }
+
+    public async Task UpdateAsync(Department department, CancellationToken ct = default)
+    {
+        try
+        {
+            _context.Departments.Update(department);
+            await _context.SaveChangesAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Не удалось обновить департамент.");
+            throw;
+        }
+    }
+
+    public async Task<bool> LinkExistsAsync(Guid departmentId, Guid locationId, CancellationToken ct = default)
+    {
+        var links = await _context.DepartmentLocations
+            .Where(dl => dl.DepartmentId == departmentId)
+            .ToListAsync(ct);
+        return links.Any(dl => dl.LocationId.Value == locationId);
+    }
+    public async Task AddLocationLinkAsync(DepartmentLocation link, CancellationToken ct)
+    {
+        await _context.DepartmentLocations.AddAsync(link, ct);
+        try
+        {
+            await _context.SaveChangesAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Не удалось создать связь локации с департаментом.");
+            throw;
+        }
+    }
+
+    public async Task RemoveLocationLinkAsync(Guid departmentId, Guid locationId, CancellationToken ct)
+    {
+        var links = await _context.DepartmentLocations
+            .Where(dl => dl.DepartmentId == departmentId)
+            .ToListAsync(ct);
+    
+        var link = links.FirstOrDefault(dl => dl.LocationId.Value == locationId);
+    
+        if (link == null)
+            throw new DomainException("Связь не найдена.");
+    
+        try
+        {
+            _context.DepartmentLocations.Remove(link);
+            await _context.SaveChangesAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Не удалось удалить связь.");
+            throw;
+        }
+    }
+
 }

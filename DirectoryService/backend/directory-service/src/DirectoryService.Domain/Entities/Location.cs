@@ -19,4 +19,13 @@ public class Location
             Address = address ?? string.Empty
         };
     }
+    
+    public void UpdateDetails(string name, string address)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Имя не может быть пустым.");
+        
+        Name = name;
+        Address = address ?? string.Empty;
+    }
 }

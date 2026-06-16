@@ -51,4 +51,9 @@ public sealed class Department
             throw new InvalidOperationException("Эта должность уже привязана к подразделению");
         _positions.Add(DepartmentPosition.Create(this, position));
     }
+    
+    public void UpdateDetails(string prefix, string name)
+    {
+        Name = DepartmentName.Create(prefix, name);
+    }
 }

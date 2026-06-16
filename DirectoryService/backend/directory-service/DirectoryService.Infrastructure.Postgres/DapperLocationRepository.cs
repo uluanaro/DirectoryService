@@ -49,4 +49,37 @@ public class DapperLocationRepository: ILocationRepository
             throw;
         }
     }
+    
+    public async Task<Location?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        var sql = "SELECT id, name, address FROM locations WHERE id = @Id";
+
+        try
+        {
+            var result = await _connection.QueryFirstOrDefaultAsync(sql, new { Id = id });
+            if (result == null) return null;
+
+            var location = Location.Create(result.name, result.address);
+            return location;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Не удалось найти локацию.");
+            throw;
+        }
+    }
+
+    public async Task UpdateAsync(Location location, CancellationToken ct)
+    {
+        var sql = "UPDATE locations SET name = @Name, address = @Address WHERE id = @Id";
+        try
+        {
+            await _connection.ExecuteAsync(sql, new { location.Name, location.Address, Id = location.Id.Value });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Не удалось обновить локацию.");
+            throw;
+        }
+    }
 }

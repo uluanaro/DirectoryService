@@ -33,4 +33,24 @@ public class EfLocationRepository : ILocationRepository
     {
         return await _context.Locations.AnyAsync(l => l.Name == name, ct);
     }
+    
+    public async Task<Location?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        var allLocations = await _context.Locations.ToListAsync(ct);
+        return allLocations.FirstOrDefault(l => l.Id.Value == id);
+    }
+
+    public async Task UpdateAsync(Location location, CancellationToken ct)
+    {
+            try
+            {
+                _context.Locations.Update(location);
+                await _context.SaveChangesAsync(ct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Не удалось обновить локацию.");
+                throw;
+            }
+    }
 }
