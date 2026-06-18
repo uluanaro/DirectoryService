@@ -92,25 +92,10 @@ public class DepartmentRepository : IDepartmentRepository
 
     public async Task RemoveLocationLinkAsync(Guid departmentId, Guid locationId, CancellationToken ct)
     {
-        var links = await _context.DepartmentLocations
-            .Where(dl => dl.DepartmentId == departmentId)
-            .ToListAsync(ct);
-    
-        var link = links.FirstOrDefault(dl => dl.LocationId.Value == locationId);
-    
-        if (link == null)
-            throw new DomainException("Связь не найдена.");
-    
-        try
-        {
-            _context.DepartmentLocations.Remove(link);
-            await _context.SaveChangesAsync(ct);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Не удалось удалить связь.");
-            throw;
-        }
+        var locationIdVO = new LocationId(locationId);
+        await _context.DepartmentLocations
+            .Where(dl => dl.DepartmentId == departmentId 
+                         && dl.LocationId == locationIdVO)
+            .ExecuteDeleteAsync(ct);
     }
-
-}
+    }
