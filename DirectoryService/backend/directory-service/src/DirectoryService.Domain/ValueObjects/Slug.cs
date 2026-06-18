@@ -1,9 +1,8 @@
-// ValueObjects/Slug.cs
-namespace Directory.Domain.ValueObjects;
-
 using System.Text.RegularExpressions;
 
-public sealed record Slug
+namespace DirectoryService.Domain.ValueObjects;
+
+public record Slug
 {
     private static readonly Regex ValidSlug = new(@"^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
 
@@ -14,23 +13,17 @@ public sealed record Slug
     public static Slug Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException("Slug не может быть пустым", nameof(value));
+            throw new ArgumentException("Slug не может быть пустым.");
 
-        value = value.Trim().ToLowerInvariant();
+        value = value.Trim().ToLowerInvariant().Replace(" ", "-");
 
         if (!ValidSlug.IsMatch(value))
             throw new ArgumentException(
-                "Slug может содержать только строчные буквы, цифры и дефисы (не в начале/конце)",
-                nameof(value));
-
-        if (value.Length > 100)
-            throw new ArgumentException("Slug слишком длинный", nameof(value));
+                "Slug может содержать только строчные буквы, цифры и дефисы.");
 
         return new Slug(value);
     }
-    
-
-    public override int GetHashCode() => Value.GetHashCode();
 
     public override string ToString() => Value;
 }
+
